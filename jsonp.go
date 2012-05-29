@@ -39,7 +39,7 @@ func explode(str string) []string {
 // JSON: {"a":{"b":{"c":{"d":{"e"}}}}}
 // val, ok := jsonp.Get(object_name, "a.b.c.d")
 func Get(ob interface{}, str string) (interface{}, bool) {
-	l := Explode(str)
+	l := explode(str)
 	for _, v := range l {
 		if v != "" {
 			if n, err := strconv.Atoi(v); err == nil {
