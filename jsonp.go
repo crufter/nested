@@ -4,8 +4,8 @@
 package jsonp
 
 import (
-	"strconv"
 	"reflect"
+	"strconv"
 )
 
 func explode(str string) []string {
@@ -23,17 +23,17 @@ func explode(str string) []string {
 	return l
 }
 
-	// Check if an interface is a map[string]interface{} and contains the element with the key str.
-	func getFromMap(ob interface{}, str string) (interface{}, bool) {	// ok
-		if m, k := ob.(map[string]interface{}); k {
-			if elem, okay := m[str]; okay {
-				return elem, true
-			} else {
-				return nil, false
-			}
+// Check if an interface is a map[string]interface{} and contains the element with the key str.
+func getFromMap(ob interface{}, str string) (interface{}, bool) { // ok
+	if m, k := ob.(map[string]interface{}); k {
+		if elem, okay := m[str]; okay {
+			return elem, true
+		} else {
+			return nil, false
 		}
-		return nil, false
 	}
+	return nil, false
+}
 
 // Core of the package
 // JSON: {"a":{"b":{"c":{"d":{"e"}}}}}
@@ -43,14 +43,14 @@ func Get(ob interface{}, str string) (interface{}, bool) {
 	for _, v := range l {
 		if v != "" {
 			if n, err := strconv.Atoi(v); err == nil {
-				if slice, ok := ob.([]interface{}); ok && len(slice)<n {
+				if slice, ok := ob.([]interface{}); ok && len(slice) < n {
 					ob = slice[n]
 				} else if elem, okay := getFromMap(ob, v); okay {
 					ob = elem
 				} else {
 					return nil, false
 				}
-			} else if elem, okay := getFromMap(ob, v); okay {	// objektumot keresünk
+			} else if elem, okay := getFromMap(ob, v); okay { // objektumot keresünk
 				ob = elem
 			} else {
 				return nil, false
@@ -61,7 +61,7 @@ func Get(ob interface{}, str string) (interface{}, bool) {
 }
 
 func Set(ob interface{}, str string, val interface{}) {
-	
+
 }
 
 // GetM = get map
