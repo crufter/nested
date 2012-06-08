@@ -1,11 +1,13 @@
 // Package jsonp helps to handle multiply nested JSON objects.
 // With the help of this pkg handling data like that feels more like in a dynamic language (eg. JavaScript), and even better since you get an exception
 // in JS if you want to access a member of a nonobject/nonarray.
+// + Some utility functions to alleviate the pain of migration from a dynamic language.
 package jsonp
 
 import (
 	"reflect"
 	"strconv"
+	"encoding/json"
 )
 
 func explode(str string) []string {
@@ -60,11 +62,7 @@ func Get(ob interface{}, str string) (interface{}, bool) {
 	return ob, true
 }
 
-func Set(ob interface{}, str string, val interface{}) {
-
-}
-
-// GetM = get map
+// Get map. You spare a type assertion with this.
 func GetM(ob interface{}, str string) (map[string]interface{}, bool) {
 	o, ok := Get(ob, str)
 	if ok {
@@ -78,7 +76,7 @@ func GetM(ob interface{}, str string) (map[string]interface{}, bool) {
 	return nil, false
 }
 
-// GetS = get slice.
+// Get (interface{}) slice. You spare a type assertion with this.
 func GetS(ob interface{}, str string) ([]interface{}, bool) {
 	o, ok := Get(ob, str)
 	if ok {
@@ -92,7 +90,7 @@ func GetS(ob interface{}, str string) ([]interface{}, bool) {
 	return nil, false
 }
 
-// GetI = get integer.
+// Get integer. You spare a type assertion with this.
 func GetI(ob interface{}, str string) (int, bool) {
 	o, ok := Get(ob, str)
 	if ok {
@@ -125,6 +123,22 @@ func HasVal(ob interface{}, str string, val interface{}) bool {
 		}
 	}
 	return false
+}
+
+// Convenient way of encoding to JSON.
+func Encode(v interface{}) (string, error) {
+	b, err := json.Marshal(v)
+	return string(b), err
+}
+
+// Convenient way of decoding from JSON.
+func Decode(str string) (map[string]interface{}, error) {
+	var v interface{}
+	err := json.Unmarshal([]byte(str), &v)
+	if ma, ok := v.(map[string]interface{}); ok {
+		return ma, err
+	}
+	return nil, err
 }
 
 // Some random type converting method...
