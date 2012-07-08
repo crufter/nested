@@ -34,8 +34,8 @@ u.(map[string]interface{})["hello"].(map[string]interface{})["this"].(map[string
 
 But not with package jsonp!
 ```
-magic := jsonp.Get(u, "hello.this.is.an.example")
-fmt.Println(magic)
+magic, ok := jsonp.Get(u, "hello.this.is.an.example")
+fmt.Println(magic, ok)
 ```
 
 Will output something like:
