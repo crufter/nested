@@ -40,7 +40,7 @@ fmt.Println(magic, ok)
 
 Will output something like:
 ```
-["hi", "there"]
+["hi", "there"] true
 ```
 
 It's magic, really!
