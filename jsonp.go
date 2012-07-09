@@ -8,6 +8,7 @@ import (
 	"reflect"
 	"strconv"
 	"encoding/json"
+	"fmt"
 )
 
 func explode(str string) []string {
@@ -132,13 +133,21 @@ func Encode(v interface{}) (string, error) {
 }
 
 // Convenient way of decoding from JSON.
-func Decode(str string) (map[string]interface{}, error) {
+func Decode(str string) (interface{}, error) {
 	var v interface{}
 	err := json.Unmarshal([]byte(str), &v)
+	return v, err
+}
+
+func DecodeM(str string) (map[string]interface{}, error) {
+	v, err := Decode(str)
+	if err != nil {
+		return nil, err
+	}
 	if ma, ok := v.(map[string]interface{}); ok {
 		return ma, err
 	}
-	return nil, err
+	return nil, fmt.Errorf("JSON is not a map.")
 }
 
 // Some random type converting method...
