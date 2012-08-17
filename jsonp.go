@@ -26,38 +26,34 @@ func explode(str string) []string {
 	return l
 }
 
-// Check if an interface is a map[string]interface{} and contains the element with the key str.
-func getFromMap(ob interface{}, str string) (interface{}, bool) { // ok
-	if m, k := ob.(map[string]interface{}); k {
-		if elem, okay := m[str]; okay {
-			return elem, true
-		} else {
-			return nil, false
-		}
-	}
-	return nil, false
-}
-
 // Core of the package
 // JSON: {"a":{"b":{"c":{"d":{"e"}}}}}
 // val, ok := jsonp.Get(object_name, "a.b.c.d")
+// Only maps with string keys are supported now.
 func Get(ob interface{}, str string) (interface{}, bool) {
 	l := explode(str)
 	for _, v := range l {
-		if v != "" {
-			if n, err := strconv.Atoi(v); err == nil {
-				if slice, ok := ob.([]interface{}); ok && len(slice) < n {
-					ob = slice[n]
-				} else if elem, okay := getFromMap(ob, v); okay {
-					ob = elem
-				} else {
-					return nil, false
-				}
-			} else if elem, okay := getFromMap(ob, v); okay { // objektumot keresünk
-				ob = elem
-			} else {
-				return nil, false
-			}
+		if v == "" {
+			continue
+		}
+		val := reflect.ValueOf(ob)
+		switch val.Kind() {
+		case reflect.Struct:
+			temp := val.FieldByName(v)
+			if !temp.IsValid() { return nil, false }
+			ob = temp.Interface()
+		case reflect.Array, reflect.Slice:
+			n, err := strconv.Atoi(v)
+			if err != nil { return nil, false }
+			if n < val.Len() { return nil, false }
+			ob = val.Index(n).Interface()
+		case reflect.Map:
+			key := reflect.ValueOf(v)
+			temp := val.MapIndex(key)
+			if !temp.IsValid() { return nil, false }
+			ob = temp.Interface()
+		default:
+			return nil, false
 		}
 	}
 	return ob, true
