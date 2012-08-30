@@ -87,6 +87,20 @@ func GetS(ob interface{}, str string) ([]interface{}, bool) {
 	return nil, false
 }
 
+// Get string.
+func GetStr(ob interface{}, str string) (string, bool) {
+	o, ok := Get(ob, str)
+	if ok {
+		val, isstr := o.(string)
+		if isstr {
+			return val, true
+		} else {
+			return "", false
+		}
+	}
+	return "", false
+}
+
 // Get integer. You spare a type assertion with this.
 func GetI(ob interface{}, str string) (int, bool) {
 	o, ok := Get(ob, str)
@@ -99,6 +113,20 @@ func GetI(ob interface{}, str string) (int, bool) {
 		}
 	}
 	return 0, false
+}
+
+// Get bool.
+func GetB(ob interface{}, str string) (bool, bool) {
+	o, ok := Get(ob, str)
+	if ok {
+		val, isbool := o.(bool)
+		if isbool {
+			return val, true
+		} else {
+			return false, false
+		}
+	}
+	return false, false
 }
 
 // If ob and str identifies a map[string]interface{} or []interface{}, then this function iterates trough it, and compares every element to val. Returns true of finds equality.
