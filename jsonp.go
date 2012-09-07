@@ -5,10 +5,10 @@
 package jsonp
 
 import (
-	"reflect"
-	"strconv"
 	"encoding/json"
 	"fmt"
+	"reflect"
+	"strconv"
 )
 
 func explode(str string) []string {
@@ -40,17 +40,25 @@ func Get(ob interface{}, str string) (interface{}, bool) {
 		switch val.Kind() {
 		case reflect.Struct:
 			temp := val.FieldByName(v)
-			if !temp.IsValid() { return nil, false }
+			if !temp.IsValid() {
+				return nil, false
+			}
 			ob = temp.Interface()
 		case reflect.Array, reflect.Slice:
 			n, err := strconv.Atoi(v)
-			if err != nil { return nil, false }
-			if n < val.Len() { return nil, false }
+			if err != nil {
+				return nil, false
+			}
+			if n < val.Len() {
+				return nil, false
+			}
 			ob = val.Index(n).Interface()
 		case reflect.Map:
 			key := reflect.ValueOf(v)
 			temp := val.MapIndex(key)
-			if !temp.IsValid() { return nil, false }
+			if !temp.IsValid() {
+				return nil, false
+			}
 			ob = temp.Interface()
 		default:
 			return nil, false

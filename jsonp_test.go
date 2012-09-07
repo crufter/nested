@@ -1,6 +1,6 @@
 package jsonp_test
 
-import(
+import (
 	"testing"
 )
 
