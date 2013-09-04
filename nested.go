@@ -1,8 +1,8 @@
-// Package jsonp helps to handle multiply nested JSON objects.
+// Package nested helps to handle nested maps/arrays.
 // With the help of this pkg handling data like that feels more like in a dynamic language (eg. JavaScript), and even better since you get an exception
 // in JS if you want to access a member of a nonobject/nonarray.
 // + Some utility functions to alleviate the pain of migration from a dynamic language.
-package jsonp
+package nested
 
 import (
 	"encoding/json"

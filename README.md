@@ -1,7 +1,7 @@
-JsonP
+nested
 =====
 
-The Jsonp Go package makes it easier to handle (too) big nested JSON structures.
+The Nested Go package makes it easier to handle (too) big nested JSON structures.
 
 How to use
 =============
@@ -12,9 +12,7 @@ j := `{
 		"this": {
 			"is": {
 				"an": {
-					"example": {
-						"hi", "there"
-					}
+					"example": "hi"
 				}
 			}
 		}
@@ -32,15 +30,15 @@ You will have a hard time accessing members in u, like
 u.(map[string]interface{})["hello"].(map[string]interface{})["this"].(map[string]interface{})	//... etc etc
 ```
 
-But not with package jsonp!
+But not with package Nested!
 ```
-magic, ok := jsonp.Get(u, "hello.this.is.an.example")
+magic, ok := nested.Get(u, "hello.this.is.an.example")
 fmt.Println(magic, ok)
 ```
 
 Will output something like:
 ```
-["hi", "there"] true
+"hi" true
 ```
 
 It's magic, really!
