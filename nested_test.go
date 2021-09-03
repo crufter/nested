@@ -3,8 +3,9 @@ package nested_test
 import (
 	"encoding/json"
 	//"fmt"
-	"github.com/opesun/nested"
 	"testing"
+
+	"github.com/crufter/nested"
 )
 
 var j = `{
@@ -15,7 +16,8 @@ var j = `{
 					"example": "hi"
 				}
 			}
-		}
+		},
+		"that": [{"try":"this"}]
 	}
 }`
 
@@ -31,6 +33,10 @@ func TestBasic(t *testing.T) {
 	}
 	if magic != "hi" {
 		t.Fatal(magic)
+	}
+	v, ok := nested.GetStr(m, "hello.that[0].try")
+	if !ok || v != "this" {
+		t.Fatal(v)
 	}
 	// Coming soon.
 }
