@@ -49,7 +49,7 @@ func Get(ob interface{}, str string) (interface{}, bool) {
 			if err != nil {
 				return nil, false
 			}
-			if n < val.Len() {
+			if n >= val.Len() {
 				return nil, false
 			}
 			ob = val.Index(n).Interface()
